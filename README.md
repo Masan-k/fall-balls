@@ -4,7 +4,7 @@
 スーパーボールを落とさないようにするゲーム。
 
 ## URL
-https://masan-k.github.io/fall-balls/
+https://masan-k.github.io/fall-balls/  
 (2021/04/15時点　設計中の為リンク先は存在しません)
 
 ## 動作環境
