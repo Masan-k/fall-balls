@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Get Touch Event</title>
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <style>
+	    body{ 
+		background-color:#000;
+	    }
+
+	    #canvas_wrapper{
+		width:800px;
+		height:1600px; 
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		position: absolute;
+		margin: auto;
+	    }
+
+	    #canvas{ 
+	        background-color: #DDD;
+                border: solid 0.1em;
+                border-color: #000;
+	    }
+        </style>
+    </head>
+    <body>
+        <div id="canvas_wrapper">
+	    <canvas id="canvas" width="800px" height="1600px"></canvas>
+		<script>
+		    let ctx = canvas.getContext('2d'); 
+
+		    let fontsize = 140;
+		    ctx.font = "bold " + fontsize + "px Arial, meiryo, sans-serif" ;
+		    let text = 'Fall Balls';
+		    let textWidth = ctx.measureText(text).width ;
+		    ctx.fillText(text, (canvas.width - textWidth) / 2, fontsize) ;
+		    
+		    let score = '100';
+		    fontsize = 80;
+		    ctx.font = "bold " + fontsize + "px Arial, meiryo, sans-serif" ;
+		    text = 'SCORE:' + score;
+		    textWidth = ctx.measureText(text).width;
+		    ctx.fillText(text, (canvas.width - textWidth) / 2, fontsize + 500) ;
+
+		    const RECT_POS_Y = 1000;
+		    const RECT_WIDTH = 500;
+		    const RECT_HEIGHT = 200;
+		    const RECT_POS_X = (canvas.width - RECT_WIDTH) / 2;
+
+		    ctx.fillStyle = '#777';
+		    ctx.fillRect(RECT_POS_X,RECT_POS_Y,RECT_WIDTH,RECT_HEIGHT); 
+
+		    fontsize = 100;
+		    ctx.font = "bold " + fontsize + "px Arial, meiryo, sans-serif" ;
+		    text = 'PLAY';
+		    textWidth = ctx.measureText(text).width;
+                    let textHeight = ctx.measureText(text).actualBoundingBoxAscent + ctx.measureText(text).actualBoundingBoxDescent;
+		    ctx.fillStyle = '#FFF';
+		    ctx.fillText(text, (canvas.width - textWidth) / 2, RECT_POS_Y + RECT_HEIGHT - textHeight);
+		    
+		    console.log('canvas.getBoundingClientRect().left -> ' + canvas.getBoundingClientRect().left) 
+		    console.log('canvas.getBoundingClientRect().top -> ' + canvas.getBoundingClientRect().top)         
+		    
+		    canvas.addEventListener('touchstart', function(e){
+
+			let touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+			let touchY = e.changedTouches[0].clientY - canvas.getBoundingClientRect().top;
+
+			//ctx.fillStyle = '#000';
+			//ctx.fillRect(touchX, touchY ,100,100);
+
+			if(RECT_POS_X <= touchX && touchX <= RECT_POS_X + RECT_WIDTH){
+			    if(RECT_POS_Y <= touchY && touchY <= RECT_POS_Y + RECT_HEIGHT){
+				console.log('PLAY CLICK!!');
+				alert('PLAY CLICK!!');
+			    }
+			}
+
+		    });
+
+
+		</script>
+	</div>
+    </body>
+</html>
