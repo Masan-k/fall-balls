@@ -1,0 +1,97 @@
+!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Ball Move</title>
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <style>
+	    body{ 
+		background-color:#000;
+	    }
+
+	    #canvas_wrapper{
+		width:800px;
+		height:1400px; 
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		position: absolute;
+		margin: auto;
+	    }
+
+	    #canvas{ 
+	        background-color: #DDD;
+                border: solid 0.1em;
+                border-color: #000;
+	    }
+        </style>
+    </head>
+    <body>
+        <div id="canvas_wrapper">
+	    <canvas id="canvas" width="800px" height="1400px"></canvas>
+        </div>
+<script>
+    let ctx = canvas.getContext('2d'); 
+    /* 
+    const ball_size = 30;
+    ctx.beginPath();
+    ctx.arc(75, 75, 30, 0, Math.PI * 2, true); // 外の円
+    ctx.fill();
+   */ 
+
+    //const fpsRate = 60;
+
+    let x = 100;
+    //let initY = 100;
+    let v0 = 0;
+    let a = 1;
+ 
+    let posY = 100;
+    let isFaster = true;
+    let isReflection = false;
+
+    let intervalId = setInterval(function(){
+	ctx.clearRect(0, 0,canvas.width, canvas.height);
+	if(posY >= 1000){
+	    isFaster = false;
+	    isReflection = true;
+	}else if(posY <= 0){
+	    isFaster = true;
+	}
+
+	if(isFaster){
+	    v0 = v0 + a;
+	}else{
+	    v0 = v0 - a;
+	}
+
+	if(isReflection){
+	    posY = 1000 - (posY - 1000);
+	    isReflection = false;
+	
+	}else if(isFaster){
+	    posY = posY + v0 ;
+	
+	}else{
+	    posY = posY - v0 ;
+	}
+
+	ctx.font = "48px serif";
+	ctx.beginPath();
+	ctx.arc(100, posY, 20,0,Math.PI * 2, true); 
+	ctx.fillText('posY - >' + posY, 300,400);
+
+	
+        //bar
+	ctx.fillRect(50,1000,100,10);
+
+	ctx.fill();
+    },16);
+
+</script>
+	
+    </body>
+</html>
