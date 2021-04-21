@@ -35,60 +35,61 @@
         </div>
 <script>
     let ctx = canvas.getContext('2d'); 
-    /* 
-    const ball_size = 30;
-    ctx.beginPath();
-    ctx.arc(75, 75, 30, 0, Math.PI * 2, true); // 外の円
-    ctx.fill();
-   */ 
-
-    //const fpsRate = 60;
 
     let x = 100;
-    //let initY = 100;
     let v0 = 0;
     let a = 1;
  
     let posY = 100;
     let isFaster = true;
     let isReflection = false;
+    
+    const BAR_Y_POS = 1000;
 
     let intervalId = setInterval(function(){
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
-	if(posY >= 1000){
-	    isFaster = false;
-	    isReflection = true;
-	}else if(posY <= 0){
-	    isFaster = true;
-	}
 
-	if(isFaster){
-	    v0 = v0 + a;
-	}else{
-	    v0 = v0 - a;
-	}
+	//-----
+	// bar
+	//-----
+	ctx.fillRect(50,1000,100,10);
 
+	//------
+	// ball
+	//------
 	if(isReflection){
-	    posY = 1000 - (posY - 1000);
+	    posY = BAR_Y_POS - (posY + v0 - BAR_Y_POS);
+	    isFaster = false;
 	    isReflection = false;
 	
-	}else if(isFaster){
-	    posY = posY + v0 ;
-	
 	}else{
-	    posY = posY - v0 ;
+	    if(isFaster){
+		posY = posY + v0;
+	    }else{
+		posY = posY - v0;
+	    }
 	}
 
 	ctx.font = "48px serif";
 	ctx.beginPath();
 	ctx.arc(100, posY, 20,0,Math.PI * 2, true); 
-	ctx.fillText('posY - >' + posY, 300,400);
-
-	
-        //bar
-	ctx.fillRect(50,1000,100,10);
-
+	//ctx.fillText('posY - >' + posY, 300,400);
+	//ctx.fillText('isReflection -> '+ isReflection, 300, 600);
 	ctx.fill();
+
+	if(isFaster){
+	    v0 = v0 + a;
+	    if(posY + v0 >= BAR_Y_POS){
+	        isReflection = true;
+	    }
+	}else{
+	    v0 = v0 - a;
+	}
+
+	if(v0 <= 0){
+	    isFaster = true;
+	}
+        
     },16);
 
 </script>
