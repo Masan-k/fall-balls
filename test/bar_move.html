@@ -42,7 +42,6 @@ DOCTYPE html>
     let changeValue = 0;
     
     let touchStartX = null;
-    //let isTouchStart = false;
     let isMoving = false;
     let dragging = false;
 
@@ -64,7 +63,6 @@ DOCTYPE html>
     },16);
 
     canvas.addEventListener('touchstart', function(e){
-	//isTouchStart = true;
 	dragging = true;
 	isMoving = false;
 
@@ -73,13 +71,11 @@ DOCTYPE html>
     });
 
     canvas.addEventListener('touchend', function(e){
-	//isTouchStart = false;
 	dragging = false;
 	isMoving = false;
     });
 
     canvas.addEventListener('touchmove', function(e){
-	//isTouchStart = false;
 	isMoving = true;
 
 	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
@@ -99,10 +95,10 @@ DOCTYPE html>
 	}
 
 	if(touchX < rectX+(RECT_WIDTH / 2)){
-	    changeValue = -10;
+	    changeValue = -20;
 	}
 	if(rectX + (RECT_WIDTH / 2) < touchX){
-	    changeValue = 10;
+	    changeValue = 20;
 	}
     }
 
