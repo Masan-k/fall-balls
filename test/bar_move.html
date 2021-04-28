@@ -1,0 +1,123 @@
+DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Ball Move</title>
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <style>
+	    body{ 
+		background-color:#000;
+	    }
+
+	    #canvas_wrapper{
+		width:800px;
+		height:1400px; 
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		position: absolute;
+		margin: auto;
+	    }
+
+	    #canvas{ 
+	        background-color: #DDD;
+                border: solid 0.1em;
+                border-color: #000;
+	    }
+        </style>
+    </head>
+    <body>
+        <div id="canvas_wrapper">
+	    <canvas id="canvas" width="800px" height="1400px"></canvas>
+        </div>
+<script>
+    let ctx = canvas.getContext('2d'); 
+
+
+    let RECT_WIDTH = 100;
+    let rectX = 50;
+    let rectY = 1000;
+    let center;
+    let changeValue = 0;
+    
+    let touchStartX = null;
+    let isTouchStart = false;
+    let isMoving = false;
+    let dragging = false;
+    let beforeFrameValue = 0;
+    //-----
+    // bar
+    //-----
+    
+    let intervalId = setInterval(function(){
+	ctx.clearRect(0, 0,canvas.width, canvas.height);
+	
+	/*
+	if(isTouchStart){
+	    rectX = rectX + changeValue;
+	}else if(dragging){
+	    rectX = rectX + beforeFrameValue;
+	}else{
+	    //console.log('else roop');
+	}
+	*/
+
+	if(dragging){
+	    rectX = rectX + changeValue;
+	}
+	
+	isMoving = false;
+	ctx.fillRect(rectX,rectY,RECT_WIDTH,20);
+
+    },16);
+
+    canvas.addEventListener('touchstart', function(e){
+	isTouchStart = true;
+	dragging = true;
+	isMoving = false;
+
+	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	setChangeValue(e);
+    });
+
+    canvas.addEventListener('touchend', function(e){
+	isTouchStart = false;
+	dragging = false;
+	isMoving = false;
+    });
+
+    canvas.addEventListener('touchmove', function(e){
+	isTouchStart = false;
+	isMoving = true;
+
+	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	setChangeValue(e);
+    });
+
+function setChangeValue(e){
+    let touchX  
+    
+    if(!(isMoving)){
+	touchX = touchStartX;
+    }else{
+	touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+    }
+
+    //beforeFrameValue = changeValue;  
+    if(touchX < rectX+(RECT_WIDTH / 2)){
+	changeValue = -10;
+    }
+    if(rectX + (RECT_WIDTH / 2) < touchX){
+	changeValue = 10;
+    }
+}
+
+       
+
+</script>
+	
+    </body>
+</html>
