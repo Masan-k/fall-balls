@@ -36,7 +36,6 @@ DOCTYPE html>
 <script>
     let ctx = canvas.getContext('2d'); 
 
-
     let RECT_WIDTH = 100;
     let rectX = 50;
     let rectY = 1000;
@@ -48,10 +47,13 @@ DOCTYPE html>
     let isMoving = false;
     let dragging = false;
     let beforeFrameValue = 0;
+
+
+    
+
     //-----
     // bar
     //-----
-    
     let intervalId = setInterval(function(){
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
 	
@@ -95,25 +97,28 @@ DOCTYPE html>
 
 	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
 	setChangeValue(e);
+        
+        e.preventDefault();
     });
 
-function setChangeValue(e){
-    let touchX  
-    
-    if(!(isMoving)){
-	touchX = touchStartX;
-    }else{
-	touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
-    }
 
-    //beforeFrameValue = changeValue;  
-    if(touchX < rectX+(RECT_WIDTH / 2)){
-	changeValue = -10;
+    function setChangeValue(e){
+	let touchX  
+	
+	if(!(isMoving)){
+	    touchX = touchStartX;
+	}else{
+	    touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	}
+
+	//beforeFrameValue = changeValue;  
+	if(touchX < rectX+(RECT_WIDTH / 2)){
+	    changeValue = -10;
+	}
+	if(rectX + (RECT_WIDTH / 2) < touchX){
+	    changeValue = 10;
+	}
     }
-    if(rectX + (RECT_WIDTH / 2) < touchX){
-	changeValue = 10;
-    }
-}
 
        
 
