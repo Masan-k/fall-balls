@@ -39,17 +39,12 @@ DOCTYPE html>
     let RECT_WIDTH = 100;
     let rectX = 50;
     let rectY = 1000;
-    let center;
     let changeValue = 0;
     
     let touchStartX = null;
-    let isTouchStart = false;
+    //let isTouchStart = false;
     let isMoving = false;
     let dragging = false;
-    let beforeFrameValue = 0;
-
-
-    
 
     //-----
     // bar
@@ -57,17 +52,9 @@ DOCTYPE html>
     let intervalId = setInterval(function(){
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
 	
-	/*
-	if(isTouchStart){
-	    rectX = rectX + changeValue;
-	}else if(dragging){
-	    rectX = rectX + beforeFrameValue;
-	}else{
-	    //console.log('else roop');
-	}
-	*/
-
+	
 	if(dragging){
+	    if(!isMoving){setChangeValue(null)};
 	    rectX = rectX + changeValue;
 	}
 	
@@ -77,7 +64,7 @@ DOCTYPE html>
     },16);
 
     canvas.addEventListener('touchstart', function(e){
-	isTouchStart = true;
+	//isTouchStart = true;
 	dragging = true;
 	isMoving = false;
 
@@ -86,13 +73,13 @@ DOCTYPE html>
     });
 
     canvas.addEventListener('touchend', function(e){
-	isTouchStart = false;
+	//isTouchStart = false;
 	dragging = false;
 	isMoving = false;
     });
 
     canvas.addEventListener('touchmove', function(e){
-	isTouchStart = false;
+	//isTouchStart = false;
 	isMoving = true;
 
 	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
@@ -105,13 +92,12 @@ DOCTYPE html>
     function setChangeValue(e){
 	let touchX  
 	
-	if(!(isMoving)){
+	if(e === null){
 	    touchX = touchStartX;
 	}else{
 	    touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
 	}
 
-	//beforeFrameValue = changeValue;  
 	if(touchX < rectX+(RECT_WIDTH / 2)){
 	    changeValue = -10;
 	}
@@ -119,8 +105,6 @@ DOCTYPE html>
 	    changeValue = 10;
 	}
     }
-
-       
 
 </script>
 	
