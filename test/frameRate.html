@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Ball Move Reflection</title>
+        <title>Frame Rate update for iphone</title>
         <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -56,8 +56,10 @@
     let movingRight = true;
     const BAR_Y_POS = 1000;
 
-    let intervalId = setInterval(function(){
-
+    //window.requestAnimationFrame(update);
+    
+    (function update(){
+        let requestId = window.requestAnimationFrame(update);
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
 
 	//-----
@@ -87,7 +89,7 @@
 
 	if(posY >= canvas.height){
 	    console.log('ball out frame!!!');
-	    clearInterval(intervalId);
+	    window.cancelAnimationFrame(requestId);
 	}
 
 	ctx.beginPath();
@@ -130,8 +132,7 @@
 
 
 	}
-
-     },16);
+     })();
 
 </script>
 	
