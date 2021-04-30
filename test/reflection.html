@@ -51,6 +51,7 @@
     let posY = 100;
     let isFaster = true;
     let isReflection = false;
+    let falling = false;
     
     let movingRight = true;
     const BAR_Y_POS = 1000;
@@ -86,67 +87,55 @@
 		posY = posY - v0;
 	    }
 	}
-	ctx.beginPath();
 
+	if(posY >= canvas.height){
+	    console.log('ball out frame!!!');
+	    clearInterval(intervalId);
+	}
+
+	ctx.beginPath();
 	ctx.arc(posX, posY, ballSize, 0, Math.PI * 2, true); 
 	ctx.fill();
-
 	
-	//reflection and v0 update
-	let ballCenter
+	let ballCenter;
+
 	if(isFaster){
 	    v0 = v0 + a;
-	    if(posY + v0 >= BAR_Y_POS){
-
-		//xPow
-		ballCenter = posX;
-		let barCenter = barPosX + (barWidth / 2);
-		xPow = ballCenter - barCenter;
-		if(xPow === 0){xPow = 0.5};
-
-	    }
 	}else{
 	    v0 = v0 - a;
 	}
 
-	if(v0 <= 0){
-	    isFaster = true;
-	}
+	if(v0 <= 0){isFaster = true;}
 
-	if(canvas.width < posX + ballSize){
-	    xPow = -xPow
-	}
-	if(posX < 0){
-	    xPow = -xPow
-	}
+	//wall reflection
+	if(canvas.width < posX + ballSize){xPow = -xPow}
+	if(posX < 0){xPow = -xPow}
 
-	//refrection
-	if(isFaster && posY + v0 >= BAR_Y_POS){
-	    if(barPosX <=  ballCenter && ballCenter <= barPosX + barWidth){
-		console.log('isReflection!!');
-		isReflection = true;
-	    }
-	}
-
-	//xPow
-        /*
-	if(isReflection){
+	if(falling){
 	    
-	    let ballCenter = posX;
-	    let barCenter = barPosX + (barWidth / 2);
-	    xPow = ballCenter - barCenter;
-	    if(xPow === 0){xPow = 0.5};
-	   
+	}else{
+
+	    if(isFaster && posY + v0 >= BAR_Y_POS){
+
+		ballCenter = posX;
+			
+		if(barPosX <=  ballCenter && ballCenter <= barPosX + barWidth){
+		    isReflection = true;
+
+		    let barCenter = barPosX + (barWidth / 2);
+	            let newXPow = ballCenter - barCenter;
+		    xPow = xPow + newXPow;
+		    if(xPow === 0){xPow = 0.5;}
+
+		}else{
+		    falling = true;
+		}
+	    }
+
+
 	}
-	
-	if(canvas.width < posX + ballSize){
-	    xPow = -xPow
-	}
-	if(posX < 0){
-	    xPow = -xPow
-	}
-	*/
-    },16);
+
+     },16);
 
 </script>
 	
