@@ -6,7 +6,8 @@
 ## URL
 https://masan-k.github.io/fall-balls/test/bar_move.html  
 https://masan-k.github.io/fall-balls/test/reflection.html  
-(2021/04/28時点　ボール反射処理を実装中)
+https://masan-k.github.io/fall-balls/test/frameRate.html  
+(2021/04/29時点　スマホ向けFrameRate調整中)
 
 ## 動作環境
 　　端末：iPhone SE（第二世代）  
