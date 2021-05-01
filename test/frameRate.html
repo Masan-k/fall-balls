@@ -56,11 +56,24 @@
     let movingRight = true;
     const BAR_Y_POS = 1000;
 
-    //window.requestAnimationFrame(update);
-    
+    let startTime = null;
+    let beforeTime
+
     (function update(){
         let requestId = window.requestAnimationFrame(update);
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
+
+	let now = new Date()
+	if(startTime === null){
+	    startTime = now.getTime();
+	}
+
+	ctx.font = "bold 50px Arial, meiryo, sans-serif" ;
+	ctx.fillText(now.getTime() - startTime, 100, 100);
+
+	
+	ctx.fillText((now.getTime() - beforeTime) / 1000, 100, 300);
+	beforeTime = now.getTime();
 
 	//-----
 	//BAR
