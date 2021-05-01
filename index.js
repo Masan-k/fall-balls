@@ -111,6 +111,9 @@ function gameover(){
     drawHiScoreCanvas();
     drawPlayCanvas();
     drawScoreCanvas();
+
+    ctx.font = "normal 40px Arial, meiryo, sans-serif" ;
+    ctx.fillText(fps + ' FPS', 500, 1350);
 }
 
 function title(){
@@ -128,7 +131,7 @@ function title(){
     drawHiScoreCanvas();
     drawPlayCanvas();
 }
-
+let fps;
 
 function main(){
     'use strict';
@@ -165,23 +168,30 @@ function main(){
 
     hitCount = 0;
     
-    let startTime = null;
     let beforeTime;
+    let frameCount = 0;
+    fps = 0;
 
     (function update(){
         let requestId = window.requestAnimationFrame(update);
 
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
 
+	//---------
+	//FPS RATE
+	//---------
 	let now = new Date()
-	if(startTime === null){
-	    startTime = now.getTime();
+	ctx.font = "normal 40px Arial, meiryo, sans-serif" ;
+	if(frameCount % 50 === 10){
+	    fps = 1 / ((now.getTime() - beforeTime)/1000);
+	    fps = Math.round(fps * 10) / 10;
 	}
-
-	ctx.font = "bold 50px Arial, meiryo, sans-serif" ;
-	ctx.fillText(now.getTime() - startTime, 100, 100);
-	
-	ctx.fillText((now.getTime() - beforeTime) / 1000, 100, 300);
+	if(fps === 0){
+	    ctx.fillText('... FPS', 500, 1350);
+	}else{
+	    ctx.fillText(fps + ' FPS', 500, 1350);
+	}
+	frameCount += 1;
 	beforeTime = now.getTime();
 	
 	//------
@@ -274,7 +284,7 @@ function main(){
 		    hitCount += 1;
 		 
 		    let barCenter = barPosX + (barWidth / 2);
-	            let newXPow = ballCenter - barCenter;
+	            let newXPow = (ballCenter - barCenter) / 2;
 		    xPow = xPow + newXPow;
 		    if(xPow === 0){xPow = 0.5;}
 
