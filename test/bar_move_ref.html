@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Frame Rate update for iphone</title>
+        <title>Ball Move Reflection</title>
         <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -52,32 +52,29 @@
     let isFaster = true;
     let isReflection = false;
     let falling = false;
+  
+    //bar move --------------
+    let changeValue = 0;
     
-    let movingRight = true;
-    const BAR_Y_POS = 1000;
+    let touchStartX = null;
+    let isMoving = false;
+    let dragging = false;
+    
+    //const BAR_Y_POS = 1000;
 
-    let startTime = null;
-    let beforeTime
+    let intervalId = setInterval(function(){
 
-    (function update(){
-        let requestId = window.requestAnimationFrame(update);
 	ctx.clearRect(0, 0,canvas.width, canvas.height);
-
-	let now = new Date()
-	if(startTime === null){
-	    startTime = now.getTime();
-	}
-
-	ctx.font = "bold 50px Arial, meiryo, sans-serif" ;
-	ctx.fillText(now.getTime() - startTime, 100, 100);
-	
-	ctx.fillText((now.getTime() - beforeTime) / 1000, 100, 300);
-	beforeTime = now.getTime();
 
 	//-----
 	//BAR
 	//-----
-	barPosX = 50; 
+	if(dragging){
+	    if(!isMoving){setChangeValue(null)};
+	    barPosX = barPosX + changeValue;
+	}
+	
+	isMoving = false;
 	ctx.fillRect(barPosX,barPosY,barWidth,barHeight);
 
 	//------
@@ -87,7 +84,7 @@
 
 	//posY 
 	if(isReflection){
-	    posY = BAR_Y_POS - (posY + v0 - BAR_Y_POS);
+	    posY = barPosY - (posY + v0 - barPosY);
 	    isFaster = false;
 	    isReflection = false;
 	
@@ -101,7 +98,7 @@
 
 	if(posY >= canvas.height){
 	    console.log('ball out frame!!!');
-	    window.cancelAnimationFrame(requestId);
+	    clearInterval(intervalId);
 	}
 
 	ctx.beginPath();
@@ -125,7 +122,7 @@
 	    
 	}else{
 
-	    if(isFaster && posY + v0 >= BAR_Y_POS){
+	    if(isFaster && posY + v0 >= barPosY){
 
 		let ballCenter = posX;
 			
@@ -144,7 +141,49 @@
 
 
 	}
-     })();
+
+     },16);
+
+    canvas.addEventListener('touchstart', function(e){
+	dragging = true;
+	isMoving = false;
+
+	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	setChangeValue(e);
+    });
+
+    canvas.addEventListener('touchend', function(e){
+	dragging = false;
+	isMoving = false;
+    });
+
+    canvas.addEventListener('touchmove', function(e){
+	isMoving = true;
+
+	touchStartX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	setChangeValue(e);
+        
+        e.preventDefault();
+    });
+
+
+    function setChangeValue(e){
+	let touchX  
+	
+	if(e === null){
+	    touchX = touchStartX;
+	}else{
+	    touchX = e.changedTouches[0].clientX - canvas.getBoundingClientRect().left;
+	}
+
+	if(touchX < barPosX+(barWidth / 2)){
+	    changeValue = -20;
+	}
+	if(barPosX + (barWidth / 2) < touchX){
+	    changeValue = 20;
+	}
+    }
+
 
 </script>
 	
