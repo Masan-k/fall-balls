@@ -4,8 +4,7 @@
 スーパーボールを落とさないようにするゲーム。
 
 ## URL
-https://masan-k.github.io/fall-balls/test/bar_move_ref.html  
-(2021/04/29時点　スマホ向けFrameRate調整中)
+https://masan-k.github.io/fall-balls/index.html  
 
 ## 動作環境
 　　端末：iPhone SE（第二世代）  
